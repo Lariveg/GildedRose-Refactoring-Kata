@@ -17,15 +17,15 @@ export class GildedRose {
 		this.items = items;
 	}
 
+	private increaseQuality(item: Item, amount = 1) {
+		item.quality = Math.min(50, item.quality + amount);
+	}
+
+	private decreaseQuality(item: Item, amount = 1) {
+		item.quality = Math.max(0, item.quality - amount);
+	}
+
 	updateQuality() {
-		const increase = (item: Item, amount = 1) => {
-			item.quality = Math.min(50, item.quality + amount);
-		};
-
-		const decrease = (item: Item, amount = 1) => {
-			item.quality = Math.max(0, item.quality - amount);
-		};
-
 		for (const item of this.items) {
 			const isAgedBrie = item.name === "Aged Brie";
 			const isBackstage =
@@ -36,18 +36,18 @@ export class GildedRose {
 			if (isSulfuras) continue;
 
 			if (isAgedBrie) {
-				increase(item);
+				this.increaseQuality(item);
 				item.sellIn--;
 
-				if (item.sellIn < 0) increase(item);
+				if (item.sellIn < 0) this.increaseQuality(item);
 				continue;
 			}
 
 			if (isBackstage) {
-				increase(item);
+				this.increaseQuality(item);
 
-				if (item.sellIn <= 10) increase(item);
-				if (item.sellIn <= 5) increase(item);
+				if (item.sellIn <= 10) this.increaseQuality(item);
+				if (item.sellIn <= 5) this.increaseQuality(item);
 
 				item.sellIn--;
 
@@ -56,17 +56,17 @@ export class GildedRose {
 			}
 
 			if (isConjured) {
-				decrease(item, 2);
+				this.decreaseQuality(item, 2);
 				item.sellIn--;
 
-				if (item.sellIn < 0) decrease(item, 2);
+				if (item.sellIn < 0) this.decreaseQuality(item, 2);
 				continue;
 			}
 
-			decrease(item);
+			this.decreaseQuality(item);
 			item.sellIn--;
 
-			if (item.sellIn < 0) decrease(item);
+			if (item.sellIn < 0) this.decreaseQuality(item);
 		}
 
 		return this.items;
