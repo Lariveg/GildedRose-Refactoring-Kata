@@ -33,45 +33,46 @@ export class GildedRose {
 
 	updateQuality() {
 		for (const item of this.items) {
-			const isAgedBrie = item.name === GildedRose.AGED_BRIE;
-			const isBackstage = item.name === GildedRose.BACKSTAGE_PASS;
-			const isSulfuras = item.name === GildedRose.SULFURAS;
-			const isConjured = item.name.startsWith(GildedRose.CONJURED);
-
-			if (isSulfuras) continue;
-
-			if (isAgedBrie) {
+			if (item.name === GildedRose.SULFURAS) {
+				continue;
+			} else if (item.name === GildedRose.AGED_BRIE) {
 				this.increaseQuality(item);
 				item.sellIn--;
 
-				if (item.sellIn < 0) this.increaseQuality(item);
-				continue;
-			}
-
-			if (isBackstage) {
+				if (item.sellIn < 0) {
+					this.increaseQuality(item);
+				}
+			} else if (item.name === GildedRose.BACKSTAGE_PASS) {
 				this.increaseQuality(item);
 
-				if (item.sellIn <= 10) this.increaseQuality(item);
-				if (item.sellIn <= 5) this.increaseQuality(item);
+				if (item.sellIn <= 10) {
+					this.increaseQuality(item);
+				}
+
+				if (item.sellIn <= 5) {
+					this.increaseQuality(item);
+				}
 
 				item.sellIn--;
 
-				if (item.sellIn < 0) item.quality = 0;
-				continue;
-			}
-
-			if (isConjured) {
+				if (item.sellIn < 0) {
+					item.quality = 0;
+				}
+			} else if (item.name.startsWith(GildedRose.CONJURED)) {
 				this.decreaseQuality(item, 2);
 				item.sellIn--;
 
-				if (item.sellIn < 0) this.decreaseQuality(item, 2);
-				continue;
+				if (item.sellIn < 0) {
+					this.decreaseQuality(item, 2);
+				}
+			} else {
+				this.decreaseQuality(item);
+				item.sellIn--;
+
+				if (item.sellIn < 0) {
+					this.decreaseQuality(item);
+				}
 			}
-
-			this.decreaseQuality(item);
-			item.sellIn--;
-
-			if (item.sellIn < 0) this.decreaseQuality(item);
 		}
 
 		return this.items;
