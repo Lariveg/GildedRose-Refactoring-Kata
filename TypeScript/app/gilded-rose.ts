@@ -1,8 +1,3 @@
-const AGED_BRIE = "Aged Brie";
-const BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert";
-const SULFURAS = "Sulfuras, Hand of Ragnaros";
-const CONJURED = "Conjured";
-
 export class Item {
 	name: string;
 	sellIn: number;
@@ -18,6 +13,12 @@ export class Item {
 export class GildedRose {
 	items: Item[];
 
+	private static readonly AGED_BRIE = "Aged Brie";
+	private static readonly BACKSTAGE_PASS =
+		"Backstage passes to a TAFKAL80ETC concert";
+	private static readonly SULFURAS = "Sulfuras, Hand of Ragnaros";
+	private static readonly CONJURED = "Conjured";
+
 	constructor(items = [] as Item[]) {
 		this.items = items;
 	}
@@ -32,10 +33,10 @@ export class GildedRose {
 
 	updateQuality() {
 		for (const item of this.items) {
-			const isAgedBrie = item.name === AGED_BRIE;
-			const isBackstage = item.name === BACKSTAGE_PASS;
-			const isSulfuras = item.name === SULFURAS;
-			const isConjured = item.name.startsWith(CONJURED);
+			const isAgedBrie = item.name === GildedRose.AGED_BRIE;
+			const isBackstage = item.name === GildedRose.BACKSTAGE_PASS;
+			const isSulfuras = item.name === GildedRose.SULFURAS;
+			const isConjured = item.name.startsWith(GildedRose.CONJURED);
 
 			if (isSulfuras) continue;
 
