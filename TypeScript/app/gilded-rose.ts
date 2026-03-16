@@ -18,6 +18,14 @@ export class GildedRose {
 	}
 
 	updateQuality() {
+		const increase = (item: Item, amount = 1) => {
+			item.quality = Math.min(50, item.quality + amount);
+		};
+
+		const decrease = (item: Item, amount = 1) => {
+			item.quality = Math.max(0, item.quality - amount);
+		};
+
 		for (const item of this.items) {
 			const isAgedBrie = item.name === "Aged Brie";
 			const isBackstage =
@@ -25,29 +33,21 @@ export class GildedRose {
 			const isSulfuras = item.name === "Sulfuras, Hand of Ragnaros";
 			const isConjured = item.name.startsWith("Conjured");
 
-			const increase = (n = 1) => {
-				item.quality = Math.min(50, item.quality + n);
-			};
-
-			const decrease = (n = 1) => {
-				item.quality = Math.max(0, item.quality - n);
-			};
-
 			if (isSulfuras) continue;
 
 			if (isAgedBrie) {
-				increase();
+				increase(item);
 				item.sellIn--;
 
-				if (item.sellIn < 0) increase();
+				if (item.sellIn < 0) increase(item);
 				continue;
 			}
 
 			if (isBackstage) {
-				increase();
+				increase(item);
 
-				if (item.sellIn <= 10) increase();
-				if (item.sellIn <= 5) increase();
+				if (item.sellIn <= 10) increase(item);
+				if (item.sellIn <= 5) increase(item);
 
 				item.sellIn--;
 
@@ -56,18 +56,17 @@ export class GildedRose {
 			}
 
 			if (isConjured) {
-				decrease(2);
+				decrease(item, 2);
 				item.sellIn--;
 
-				if (item.sellIn < 0) decrease(2);
+				if (item.sellIn < 0) decrease(item, 2);
 				continue;
 			}
 
-			// Normal items
-			decrease();
+			decrease(item);
 			item.sellIn--;
 
-			if (item.sellIn < 0) decrease();
+			if (item.sellIn < 0) decrease(item);
 		}
 
 		return this.items;
