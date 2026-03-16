@@ -23,7 +23,9 @@ export class GildedRose {
 			const isBackstage =
 				item.name === "Backstage passes to a TAFKAL80ETC concert";
 			const isSulfuras = item.name === "Sulfuras, Hand of Ragnaros";
-			const isNormalItem = !isAgedBrie && !isBackstage && !isSulfuras;
+			const isConjured = item.name.startsWith("Conjured");
+			const isNormalItem =
+				!isAgedBrie && !isBackstage && !isSulfuras && !isConjured;
 
 			if (isNormalItem) {
 				item.quality = Math.max(0, item.quality - 1);
@@ -57,6 +59,14 @@ export class GildedRose {
 				item.sellIn = item.sellIn - 1;
 				if (item.sellIn < 0) {
 					item.quality = 0;
+				}
+			}
+
+			if (isConjured) {
+				item.quality = Math.max(0, item.quality - 2);
+				item.sellIn = item.sellIn - 1;
+				if (item.sellIn < 0) {
+					item.quality = Math.max(0, item.quality - 2);
 				}
 			}
 		}
