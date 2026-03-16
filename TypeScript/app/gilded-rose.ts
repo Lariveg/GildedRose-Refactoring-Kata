@@ -1,9 +1,14 @@
+const AGED_BRIE = "Aged Brie";
+const BACKSTAGE_PASS = "Backstage passes to a TAFKAL80ETC concert";
+const SULFURAS = "Sulfuras, Hand of Ragnaros";
+const CONJURED = "Conjured";
+
 export class Item {
 	name: string;
 	sellIn: number;
 	quality: number;
 
-	constructor(name, sellIn, quality) {
+	constructor(name: string, sellIn: number, quality: number) {
 		this.name = name;
 		this.sellIn = sellIn;
 		this.quality = quality;
@@ -11,9 +16,9 @@ export class Item {
 }
 
 export class GildedRose {
-	items: Array<Item>;
+	items: Item[];
 
-	constructor(items = [] as Array<Item>) {
+	constructor(items = [] as Item[]) {
 		this.items = items;
 	}
 
@@ -27,11 +32,10 @@ export class GildedRose {
 
 	updateQuality() {
 		for (const item of this.items) {
-			const isAgedBrie = item.name === "Aged Brie";
-			const isBackstage =
-				item.name === "Backstage passes to a TAFKAL80ETC concert";
-			const isSulfuras = item.name === "Sulfuras, Hand of Ragnaros";
-			const isConjured = item.name.startsWith("Conjured");
+			const isAgedBrie = item.name === AGED_BRIE;
+			const isBackstage = item.name === BACKSTAGE_PASS;
+			const isSulfuras = item.name === SULFURAS;
+			const isConjured = item.name.startsWith(CONJURED);
 
 			if (isSulfuras) continue;
 
