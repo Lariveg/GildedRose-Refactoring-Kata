@@ -24,51 +24,50 @@ export class GildedRose {
 				item.name === "Backstage passes to a TAFKAL80ETC concert";
 			const isSulfuras = item.name === "Sulfuras, Hand of Ragnaros";
 			const isConjured = item.name.startsWith("Conjured");
-			const isNormalItem =
-				!isAgedBrie && !isBackstage && !isSulfuras && !isConjured;
 
-			if (isNormalItem) {
-				item.quality = Math.max(0, item.quality - 1);
-				item.sellIn = item.sellIn - 1;
-				if (item.sellIn < 0) {
-					item.quality = Math.max(0, item.quality - 1);
-				}
-			}
+			const increase = (n = 1) => {
+				item.quality = Math.min(50, item.quality + n);
+			};
 
-			if (isSulfuras) {
-				// Sulfuras does not change in quality or sellIn so we can skip it in the logic below
+			const decrease = (n = 1) => {
+				item.quality = Math.max(0, item.quality - n);
+			};
+
+			if (isSulfuras) continue;
+
+			if (isAgedBrie) {
+				increase();
+				item.sellIn--;
+
+				if (item.sellIn < 0) increase();
 				continue;
 			}
 
-			if (isAgedBrie) {
-				item.quality = Math.min(50, item.quality + 1);
-				item.sellIn = item.sellIn - 1;
-				if (item.sellIn < 0) {
-					item.quality = Math.min(50, item.quality + 1);
-				}
-			}
-
 			if (isBackstage) {
-				item.quality = Math.min(50, item.quality + 1);
-				if (item.sellIn <= 10) {
-					item.quality = Math.min(50, item.quality + 1);
-				}
-				if (item.sellIn <= 5) {
-					item.quality = Math.min(50, item.quality + 1);
-				}
-				item.sellIn = item.sellIn - 1;
-				if (item.sellIn < 0) {
-					item.quality = 0;
-				}
+				increase();
+
+				if (item.sellIn <= 10) increase();
+				if (item.sellIn <= 5) increase();
+
+				item.sellIn--;
+
+				if (item.sellIn < 0) item.quality = 0;
+				continue;
 			}
 
 			if (isConjured) {
-				item.quality = Math.max(0, item.quality - 2);
-				item.sellIn = item.sellIn - 1;
-				if (item.sellIn < 0) {
-					item.quality = Math.max(0, item.quality - 2);
-				}
+				decrease(2);
+				item.sellIn--;
+
+				if (item.sellIn < 0) decrease(2);
+				continue;
 			}
+
+			// Normal items
+			decrease();
+			item.sellIn--;
+
+			if (item.sellIn < 0) decrease();
 		}
 
 		return this.items;
