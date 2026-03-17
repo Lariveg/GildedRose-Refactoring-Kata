@@ -12,7 +12,7 @@ npm install
 
 ## Run the unit tests from the Command-Line
 
-There are two unit test frameworks to choose from, Jest and Mocha.
+There are three unit test frameworks to choose from, Jest, Mocha and Vitest.
 
 ```sh
 npm run test:jest
@@ -28,6 +28,12 @@ Mocha
 
 ```sh
 npm run test:mocha
+```
+
+Vitest
+
+```sh
+npm run test:vitest
 ```
 
 
